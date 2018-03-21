@@ -166,7 +166,8 @@
 
         1.   CREATE DATABASE  devops1   CHARACTER SET utf8 COLLATE utf8_general_ci;  #创建数据库
 		
-		2.配置文件devops/settings 里连接数据库
+        2.配置文件devops/settings 里连接数据库
+		
 				DATABASES = {
 					'default': {
 						'ENGINE': 'django.db.backends.mysql',
@@ -177,20 +178,19 @@
 						'PORT':'3306',
 					}
 				}
-		3.表结构刷到数据库
+				
+        3.表结构刷到数据库
 
-				 python  manage.py makemigrations
-				 
-				 
+				 python  manage.py makemigrations				 
 				 python  manage.py migrate		
 				 
         4.创建管理用户
 		
-		       (env) [root@pyvm devops]# python manage.py  createsuperuser  
+				 (env) [root@pyvm devops]# python manage.py  createsuperuser  
 
         5.运行项目
 		
-		    (env) [root@pyvm devops]# python manage.py  runserver 0.0.0.0:8001
+				 (env) [root@pyvm devops]# python manage.py  runserver 0.0.0.0:8001
 
 
 
