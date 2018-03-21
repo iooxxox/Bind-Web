@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block content %}
+            <div class="row">
+      <!-- Left col -->
+        <div class="col-md-12">
+            <div class="box-header with-border">
+              <h3 class="box-title">解析记录修改</h3>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <!-- /.box-header -->
+
+            <div class="box-body">
+                <input type="hidden" id='upid' data= "{{ named.id }}"   name="id"><!--update need id-->
+                <form   method="post"     class="form-horizontal Updatezone">
+                     {%  csrf_token %}
+                    <div class="hr-line-dashed"></div>
+
+							<div class="form-group">
+								<label for="zone" class="col-sm-2 control-label">根域<span class="red-fonts">*</span></label>
+								<div class="col-sm-8">
+									<input id="zones" value="{{named.zone}}" name="zone" placeholder="zone" type="text" class="form-control" readonly="">
+								</div>
+							</div><!--域-->
+							<div class="hr-line-dashed"></div>
+							<div class="form-group">
+								<label for="host" class="col-sm-2 control-label">二级域名<span class="red-fonts">*</span></label>
+								<div class="col-sm-8">
+									<input id="host" value="{{named.host}}" name="host" placeholder="host" type="text" class="form-control">
+								</div>
+							</div><!--主机记录-->
+							<div class="hr-line-dashed"></div>
+							<div class="form-group">
+								<label for="type" class="col-sm-2 control-label">记录类型<span class="red-fonts">*</span></label>
+								<div class="col-sm-8">
+									<input id="type"  value="{{named.type}}" name="type" placeholder="type" class="form-control">
+								</div>
+							</div><!--记录类型-->
+							<div class="hr-line-dashed"></div>
+							<div class="form-group">
+								<label for="data" class="col-sm-2 control-label">记录值<span class="red-fonts">*</span></label>
+								<div class="col-sm-8">
+									<input id="data"   value="{{named.data}}" name="data"   placeholder="data" class="form-control">
+								</div>
+							</div><!--记录值-->
+
+
+							<div class="hr-line-dashed"></div>
+							<div class="form-group">
+								<label for="ttl" class="col-sm-2 control-label">TTL<span class="red-fonts">*</span></label>
+								<div class="col-sm-8">
+									<input id="ttl"  value="{{named.ttl}}" name="ttl"   placeholder="TTL" class="form-control">
+								</div>
+							</div><!--TTL-->
+
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <button id="delete_button" class="btn btn-danger">删除</button>
+                            <button id="submit_button" class="btn btn-primary" type="submit">更新</button>
+                        </div>
+                    </div>
+             </form>
+    </div>
+    <!-- /.body -->
+
+</div>
+<!-- /.col -->
+</div>
+<!-- /.row -->
+{% endblock %}
+
+{%  block js %}
+
+/*删除*/
+
+$("#delete_button").on('click',function(){
+    if(confirm("是否确认删除？")){
+        $.ajax({
+            url:"",
+            type: "DELETE",
+            success: function(res){
+            console.log(res)
+            if (res.code == 0) {
+		    swal({
+			 "title": "删除",
+			 "text": res.result,
+			 "type": "success"
+		    }, function () {
+			 setTimeout(function () {
+			   window.location.href="{% url 'named_list' %}";
+			 }, 50);
+		     })
+		}else{
+			swal("操作失败", res.errmsg, "error")
+		     }
+	   }
+        })
+
+    }  // end confirm
+     return false
+})
+
+{% endblock %}
+

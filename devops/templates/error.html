@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% endblock %}
+
+{% block css %}
+    <style>
+    #page-wrapper{margin: 0px;}
+    #content-header{display: none;}
+    </style>
+{% endblock %}
+
+
+{% block body %}
+    <h1><p class="text-center">操作失败</p></h1>
+    <h3><p class="text-center">{{ msg}}</p> </h3>
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        var next_url = "{{ next_url }}";
+        if (next_url == ""){
+            next_url = "/"
+        }
+        $(function(){
+            setTimeout(function(){
+                window.location.href = next_url;
+            }, 3000)
+        })
+    </script>
+{% endblock %}

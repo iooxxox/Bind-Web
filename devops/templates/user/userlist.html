@@ -1,0 +1,318 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<table class="table table-striped">
+    <caption>
+        <button type="submit" class="btn btn-primary Addusers">用户添加</button>
+        <form class="form-inline pull-right" >
+
+          <div class="form-group"    >
+            <div class="input-group">
+              <input    type="text" name="search_data" value="" class="form-control" >
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">用户搜索</button>
+        </form>
+    </caption>
+    <thead>
+        <tr>
+           <th>用户名</th>
+            <th>中文名</th>
+           <th>邮箱</th>
+           <th>状态</th>
+           <th>最后登陆时间</th>
+           <th>操作</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for user_obj in object_list %}
+        <tr>
+            <td>{{ user_obj.username }}</td>
+            <td>{{ user_obj.profile.name }}</td>
+            <td>{{ user_obj.email }}</td>
+            <td class="status">
+                {% if user_obj.is_active %}
+                    <span class="glyphicon glyphicon-ok-circle text-success"></span>正常
+                {% else %}
+                    <span class="glyphicon glyphicon-warning-sign text-warning"></span>禁止
+                {% endif %}
+            </td>
+            <td>{{ user_obj.last_login|date:"Y-m-d H:i:s" }}</td>
+            <td>
+                <div class="btn-group">
+                    <div class="btn-group">
+                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                            修改
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+                            {% if perms.auth.change_group %}
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="" data='{"uid": "{{ user_obj.id }}", "username": "{{ user_obj.username }}" }' class="user_to_group">添加到指定组</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    {% if perms.auth.change_user %}
+
+                        {% if user_obj.is_active %}
+                            <button type="button" class="btn btn-sm btn-warning modify_user_status" status={{ user_obj.is_active|lower  }} data="{{ user_obj.id }}">禁用</button>
+                        {% else %}
+                            <button type="button" class="btn btn-info btn-sm modify_user_status" status={{ user_obj.is_active|lower }} data="{{ user_obj.id }}">开启</button>
+                        {% endif %}
+
+                        <button type="button" class="btn btn-sm btn-danger User_delete" status={{ user_obj.is_active|lower  }} data="{{ user_obj.id }}">删除</button>
+
+                    {% endif %}
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table> <!-- 用户列表-->
+
+
+
+
+<div>
+  <center>
+    <ul class="pagination">
+           <li> <a href="{% url "user_list"  %}?page=1">首页 </a> </li>
+           {% if  page_obj.has_previous %}
+                    <li> <a href="{% url "user_list"  %}?page={{  page_obj.previous_page_number }}&{{ search_data }}"> 上一页 </a> </li>
+            {% else %}
+                    <li class="disabled"> <a> 上一页 </a> </li>
+           {% endif %}
+
+           {% for p in page_range %}
+               {% if search_data  %}  <!-- 判断是否是搜索分页-->
+                       {% if p == page_obj.number %}
+                            <li class="active"><a href="{% url "user_list"  %}?page={{ p }}&{{ search_data }}"> {{ p }} </a> </li>
+                        {% else %}
+                            <li ><a href="{% url "user_list"  %}?page={{ p }}&{{ search_data }}"> {{ p }} </a> </li>
+                        {% endif %}
+                   {% else %}
+                        {% if p == page_obj.number %}
+                            <li class="active"><a href="{% url "user_list"  %}?page={{ p }}"> {{ p }} </a> </li>
+                        {% else %}
+                            <li ><a href="{% url "user_list"  %}?page={{ p }}"> {{ p }} </a> </li>
+                        {% endif %}
+               {% endif %}
+           {% endfor %}
+
+
+           {% if  page_obj.has_next %}
+                    <li> <a href="{% url "user_list"  %}?page={{  page_obj.next_page_number }}&{{ search_data }}"> 下一页 </a> </li>
+           {% endif %}
+           <li> <a href="{% url "user_list"  %}?page={{ page_obj.paginator.num_pages }}">尾页 </a> </li>
+           <li> <span style="color: #0a0a0a">总: &nbsp;{{ page_obj.paginator.num_pages }} 页 </span> </li>
+
+    </ul>
+  </center>
+</div> <!--页码 -->
+
+
+<div class="modal fade" id="user_to_group_modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 id="user_to_group_modal_title"></h4>
+            </div>
+            <div class="modal-body clearfix">
+                <div class="col-xs-8" id="select_service_id">
+                  <select class=" form-control" id="group_lists" name="idc_id">
+               </select>
+                </div>
+                <button class="btn btn-primary" id="user_to_group_btn">提交</button>
+            </div>
+            <div class="modal-footer">
+
+                <input class="btn btn-default" data-dismiss="modal" aria-hidden="true" type="button" value="取消">
+            </div>
+
+        </div>
+    </div>
+</div> <!--修改用户组模态框 -->
+
+
+<!--用户添加模态框-->
+<div class="modal fade"  id ="adduserModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">添加用户</h4>
+      </div>
+      <div class="modal-body">
+        <p hidden id="uperrorMsg" class="text-danger" style="color:red"></p> <!-- for error msg-->
+            <form id="adduserForm" class="form-horizontal adduserForm nice-validator n-yellow" novalidate="novalidate">
+            <div class="form-group">
+                <label for="username" class="col-sm-2 control-label">用户名<span class="red-fonts">*</span></label>
+                <div class="col-sm-8">
+                    <input id="addusername" name="username" placeholder="username" type="text" class="form-control"  datatype="s5-16" errormsg="昵称至少5个字符,最多16个字符！" >
+                </div>
+            </div><!--username-->
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">姓名<span class="red-fonts">*</span></label>
+                <div class="col-sm-8">
+                    <input id="addname_cn" name="name_cn" placeholder="name_cn" type="text" class="form-control" datatype="s2-4" errormsg="请填写至少二个中文字符">
+                </div>
+            </div><!--name-->
+            <div class="form-group">
+                   <label for="name" class="col-sm-2 control-label">密码<span class="red-fonts">*</span></label>
+                    <div class="col-sm-8">
+                        <input id="addpassword" name="password" placeholder="Password" type="password" class="form-control" aria-required="true" data-tip="密码" datatype="s6-16" errormsg="密码太短了">
+                         </div>
+             </div> <!--password-->
+
+
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label for="email" class="col-sm-2 control-label">Email<span class="red-fonts">*</span></label>
+                <div class="col-sm-8">
+                    <input id="addemail" name="email" type="email" placeholder="email" class="form-control" datatype="e" errormsg="邮箱格式错误">
+                </div>
+            </div><!--Email-->
+
+
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <div class="modal-footer">
+                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                 <button type="button" class="btn btn-primary" id="adduserbtn">确认</button>
+            </div>
+        </div> <!--button-->
+        </form> <!--form-->
+      </div> <!--modal-body-->
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+{% endblock%}
+
+{% block js %}
+
+//表单验证
+    $(function(){
+       $(".adduserForm").Validform({
+               tiptype:3
+        });
+    })
+
+// 添加用户模态框
+$(".Addusers").on('click',function(){
+    $('#adduserModal').modal('show')
+})
+
+
+    $(function () {
+        $("#adduserbtn").click(function() {
+               username = $("#addusername").val();
+               last_name = $("#addname_cn").val();
+               password = $("#addpassword").val();
+               email =   $("#addemail").val();
+              $.ajax({
+                  url: "{% url "user_add" %}",
+                  type: "post",
+                  data: {"username": username,"last_name":last_name,"password":password,"email":email},
+                  success: function(res){
+                     if (res.code == 0) {
+                         swal("Good", "操作成功", "success");
+                      location.reload()
+                         }else{
+                        console.log("操作失败")
+                         }
+                     },
+                beforeSend: function (xhr, settings) {
+                    var csrftoken = getCookie('csrftoken');
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+                              }
+                          }
+              })
+
+         })
+
+  })
+
+
+
+
+//修改用户状态
+    $(function () {
+         //第一步： 找到修改用户状态按钮，绑定点击事件
+        $(".modify_user_status").click(function() {
+            //第二步: 获取当前点击的是哪个用，得知道当前点击用户的id
+               uid = $(this).attr("data");
+                //console.log(uid)
+            // 第三步：发起ajax请求,修改用户状态
+              $.ajax({
+                  url: "{% url "user_modify_status"%}",
+                  type: "post",
+                  data: {"uid": uid},
+                  success: function(res){
+                     if (res.status == 0) {
+                         swal("Good", "操作成功", "success");
+                        //swal("操作成功", "success");
+                        // console.log("操作成功")
+                      location.reload()
+                         }else{
+                        console.log("操作失败")
+                         }
+                     },
+                beforeSend: function (xhr, settings) {
+                    var csrftoken = getCookie('csrftoken');
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+                              }
+                          }
+              })
+          
+         })
+
+  })
+
+
+
+//删除用户
+
+        $(".User_delete").click(function () {
+            var uid = $(this).attr("data")
+            $.ajax({
+                  url: "{% url "user_delete"%}",
+                  type: "delete",
+                  data: {"uid": uid},
+                  success: function(res){
+                     if (res.code == 0) {
+                         swal("Good", "操作成功", "success");
+                      location.reload()
+                         }else{
+                          swal("操作失败", res.errmsg, "error")
+                         }
+                     },
+                beforeSend: function (xhr, settings) {
+                    var csrftoken = getCookie('csrftoken');
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+                              }
+                          }
+              })
+
+
+        })
+
+
+
+
+{% endblock %}
+
