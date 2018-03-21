@@ -180,7 +180,7 @@ http://ip/8001  访问WEB 界面 登录账户就是创建的管理用户
 ![image](https://github.com/1032231418/PYVM/blob/master/bind-web-images/namelist.png)	
 
 
-<h2 align = "center">三．服务并设置开机启动脚本 </h2>
+<h2 align = "center">三．启动Bind服务并设置开机启动脚本 </h2>
 
 1.启动  Bind 服务并设置开机启动脚本
 
