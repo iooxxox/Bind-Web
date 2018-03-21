@@ -56,8 +56,10 @@
 
 
 4.配置Bind
- vi /usr/local/bind/etc/named.conf
+注意：  bind 的数据库即是 管理平台使用的数据库，这里配置的库名和，后面管理平台的数据库名一样
 
+ vi /usr/local/bind/etc/named.conf
+       
 		options {
 				directory       "/usr/local/bind/";
 				version         "bind-9.9.9";
@@ -93,7 +95,7 @@
 		 
 				dlz "Mysql zone" {
 						database        "mysql
-						{host=127.0.0.1 dbname=named ssl=false port=3306 user=root pass=123456}
+						{host=127.0.0.1 dbname=devops1 ssl=false port=3306 user=root pass=123456}
 						{select zone from dns_records where zone='$zone$'}
 						{select ttl, type, mx_priority, case when lower(type)='txt' then concat('\"', data, '\"') when lower(type) = 'soa' then concat_ws(' ', data, resp_person, serial, refresh, retry, expire, minimum) else data end from dns_records where zone = '$zone$' and host = '$record$'}"; 
 				};
