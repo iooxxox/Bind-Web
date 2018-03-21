@@ -8,6 +8,8 @@
 
       bind-9.9.5.tar.gz  
       mysql-5.6.16.tar.gz
+	  Python 2.7.6 
+	  Django 1.11.x
 描述： 
 数据库安装就不在絮叨，了解运维的同学都应该知道
 
