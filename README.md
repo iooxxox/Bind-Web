@@ -194,8 +194,7 @@
 		
 				 (env) [root@pyvm devops]# python manage.py  createsuperuser  
 				 
-				 
-				 ![image](https://github.com/1032231418/PYVM/tree/master/bind-web-images/createuser.png)	
+![image](https://github.com/1032231418/PYVM/blob/master/bind-web-images/createsuperuser.png)				 
 				 
 
         5.运行项目
