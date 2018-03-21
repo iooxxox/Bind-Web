@@ -182,10 +182,10 @@
         3.表结构刷到数据库
 
 				 python  manage.py makemigrations
-				 ![image](https://github.com/1032231418/PYVM/tree/master/bind-web-images/makemigrations.png)	 
+![image](https://github.com/1032231418/PYVM/tree/master/bind-web-images/makemigrations.png)	 
 				 
 				 python  manage.py migrate		
-				 ![image](https://github.com/1032231418/PYVM/tree/master/bind-web-images/migrate.png)				 
+![image](https://github.com/1032231418/PYVM/tree/master/bind-web-images/migrate.png)				 
 				 
         4.创建管理用户
 		
@@ -203,11 +203,11 @@
 http://ip/8001  访问WEB 界面 登录账户就是创建的管理用户
 
 
-				 ![image](https://github.com/1032231418/PYVM/tree/master/bind-web-images/login.png)	
+![image](https://github.com/1032231418/PYVM/tree/master/bind-web-images/login.png)	
 				 
-				 ![image](https://github.com/1032231418/PYVM/tree/master/bind-web-images/userlist.png)	
+![image](https://github.com/1032231418/PYVM/tree/master/bind-web-images/userlist.png)	
 				 
-                 ![image](https://github.com/1032231418/PYVM/tree/master/bind-web-images/namelist.png)	
+![image](https://github.com/1032231418/PYVM/tree/master/bind-web-images/namelist.png)	
 
 
 
