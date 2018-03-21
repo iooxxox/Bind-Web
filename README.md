@@ -155,7 +155,7 @@
 上传 Bind-web-1.0.tar.gz 管理平台
 
 	(demo) -bash-4.1# git  clone  https://github.com/1032231418/Bind-Web.git  #git  克隆下来
-	(demo) -bash-4.1# cd Bind-Web/devops
+	(demo) -bash-4.1# cd Bind-Web
 	
 运行软件程序使用Django框架写的，要用pip安装该框架
 
