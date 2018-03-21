@@ -106,69 +106,32 @@
 
 保存退出
 
-生成 name.ca文件
+5.生成 name.ca文件
 
 	(demo) -bash-4.1# cd /usr/local/bind/etc/
 	(demo) -bash-4.1# dig -t NS .  >named.ca
 
-5.配置数据库，导入sql 文件
-
-	 mysql -p   #登录数据库
-	mysql> CREATE DATABASE  named   CHARACTER SET utf8 COLLATE utf8_general_ci; 
-	mysql> source named.sql;             #注意路径，这里我放在当前目录
-	就两张表，一个dns用到的表，一个用户管理表
-
-![](https://github.com/1032231418/doc/blob/master/images/2.png?raw=true)
 
 
-6.启动  Bind 服务并设置开机启动脚本
 
-    (demo) -bash-4.1# /usr/local/bind/sbin/named
-
-监控系统日志：
-
-	 tail -f /var/log/messages
-	 
-如下，说明服务启动正常
-
-![](https://github.com/1032231418/doc/blob/master/images/3.png?raw=true)
-
-	测试bind连接数据库是否正常:
-
-![](https://github.com/1032231418/doc/blob/master/images/4.png?raw=true)
-
-
-设置 Bind  开机启动脚本
-
-	bind 本文档会附带，传到服务器  /etc/init.d/ 目录
-	(demo) -bash-4.1# chmod  755 /etc/init.d/bind 
-	(demo) -bash-4.1# #mkdir  /var/run/named/ && chown  named:named -R /var/run/named 
-	杀掉 named  服务，改用脚本启动
-
-	(demo) -bash-4.1# pkill  named
-	(demo) -bash-4.1# /etc/init.d/bind  start            #监控日志，查看启动状态
-	(demo) -bash-4.1# chkconfig  --add bind            #加入开机启动
- tail -f /var/log/messages
-
-![](https://github.com/1032231418/doc/blob/master/images/5.png?raw=true)
 
 <h2 align = "center">二．配置Bind-Web 管理平台 </h2>
 
-上传 Bind-web-1.0.tar.gz 管理平台
+1.克隆管理平台
 
 	(demo) -bash-4.1# git  clone  https://github.com/1032231418/Bind-Web.git  #git  克隆下来
 	(demo) -bash-4.1# cd Bind-Web
 	
-运行软件程序使用Django框架写的，要用pip安装该框架
+2.安装Django框架
 
 	(demo) -bash-4.1# pip instal -r  requirement.txt
 
 
-数据库配置:   
+3.数据库配置:   
 
-        1.   CREATE DATABASE  devops1   CHARACTER SET utf8 COLLATE utf8_general_ci;  #创建数据库
+        1.)   CREATE DATABASE  devops1   CHARACTER SET utf8 COLLATE utf8_general_ci;  #创建数据库
 		
-        2.配置文件devops/settings 里连接数据库
+        2.)配置文件devops/settings 里连接数据库
 		
 				DATABASES = {
 					'default': {
@@ -181,7 +144,7 @@
 					}
 				}
 				
-        3.表结构刷到数据库
+        3.)表结构刷到数据库
 
 				 python  manage.py makemigrations
 				 
@@ -192,17 +155,16 @@
 				 
 ![image](https://github.com/1032231418/PYVM/blob/master/bind-web-images/migrate.png)				 			 
 				 
-        4.创建管理用户
+        4.)创建管理用户
 		
 				 (env) [root@pyvm devops]# python manage.py  createsuperuser  
 				 
 ![image](https://github.com/1032231418/PYVM/blob/master/bind-web-images/createuser.png)				 
 				 
 
-        5.运行项目
+        5.)运行项目
 		
 				 (env) [root@pyvm devops]# python manage.py  runserver 0.0.0.0:8001
-
 
 
 
@@ -218,4 +180,35 @@ http://ip/8001  访问WEB 界面 登录账户就是创建的管理用户
 ![image](https://github.com/1032231418/PYVM/blob/master/bind-web-images/namelist.png)	
 
 
+<h2 align = "center">三．服务并设置开机启动脚本 </h2>
 
+1.启动  Bind 服务并设置开机启动脚本
+
+    (demo) -bash-4.1# /usr/local/bind/sbin/named
+
+2.监控系统日志：
+
+	 tail -f /var/log/messages
+	 
+3.如下，说明服务启动正常
+
+![](https://github.com/1032231418/doc/blob/master/images/3.png?raw=true)
+
+	测试bind连接数据库是否正常:
+
+![](https://github.com/1032231418/doc/blob/master/images/4.png?raw=true)
+
+
+4.设置 Bind  开机启动脚本
+
+	bind 本文档会附带，传到服务器  /etc/init.d/ 目录
+	(demo) -bash-4.1# chmod  755 /etc/init.d/bind 
+	(demo) -bash-4.1# #mkdir  /var/run/named/ && chown  named:named -R /var/run/named 
+	杀掉 named  服务，改用脚本启动
+
+	(demo) -bash-4.1# pkill  named
+	(demo) -bash-4.1# /etc/init.d/bind  start            #监控日志，查看启动状态
+	(demo) -bash-4.1# chkconfig  --add bind            #加入开机启动
+ tail -f /var/log/messages
+
+![](https://github.com/1032231418/doc/blob/master/images/5.png?raw=true)
