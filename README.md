@@ -208,13 +208,13 @@
 http://ip/8001  访问WEB 界面 登录账户就是创建的管理用户
 
 
-![image](https://github.com/1032231418/PYVM/tree/master/bind-web-images/login.png)	
+![image](https://github.com/1032231418/PYVM/blob/master/bind-web-images/login.png)	
 
 				 
-![image](https://github.com/1032231418/PYVM/tree/master/bind-web-images/userlist.png)
+![image](https://github.com/1032231418/PYVM/blob/master/bind-web-images/userlist.png)
 	
 				 
-![image](https://github.com/1032231418/PYVM/tree/master/bind-web-images/namelist.png)	
+![image](https://github.com/1032231418/PYVM/blob/master/bind-web-images/namelist.png)	
 
 
 
