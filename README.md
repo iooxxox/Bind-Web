@@ -183,12 +183,12 @@
 
 				 python  manage.py makemigrations
 				 
-![image](https://github.com/1032231418/PYVM/tree/master/bind-web-images/makemigrations.png)	 
+
+![image](https://github.com/1032231418/PYVM/blob/master/bind-web-images/makemigrations.png)	
 				 
 				 python  manage.py migrate		
 				 
-				 
-![image](https://github.com/1032231418/PYVM/tree/master/bind-web-images/migrate.png)				 
+![image](https://github.com/1032231418/PYVM/blob/master/bind-web-images/migrate.png)				 			 
 				 
         4.创建管理用户
 		
