@@ -80,7 +80,7 @@ class ModifyUserView(LoginRequiredMixin,PermissionRequiredMixin, View):
     def delete(self, request, *args, **kwargs):
         ret = {"code": 0}
         try:
-            idc_obj = User.objects.get(pk=QueryDict(request.body)['id']).delete()
+            idc_obj = User.objects.get(pk=QueryDict(request.body)['uid']).delete()
         except User.DoesNotExist:
             ret = {"code": 1, "errmsg": "用户不存在"}
         return JsonResponse(ret)
