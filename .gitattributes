@@ -1,3 +1,3 @@
-*.js linguist-language=Python, Django
-*.css linguist-language=Python, Django
-*.html linguist-language=Python, Django
+*.js linguist-language=Python
+*.css linguist-language=Python
+*.html linguist-language=Python
