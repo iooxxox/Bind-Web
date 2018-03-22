@@ -62,13 +62,17 @@ class UserListView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView,get
 class ModifyUserView(LoginRequiredMixin,PermissionRequiredMixin, View):
     permission_required='auth.add_user'
 
-    def post(self, request, *args, **kwargs):
-        ret = {"code": 0}
+    def post(self, request):
+        data = (request.POST.dict())
+        ret = {"code":0}
         try:
-            User_obj = User.objects.create(**QueryDict(request.body).dict())
-
+            User_obj = User.objects.create_user(username=data['username'],
+                                              last_name=data['last_name'],
+                                              password=data['password'],
+                                              email=data['email'],
+                                               )
         except IntegrityError as e:
-            ret = {"code": 1, "msg": "该用户已存在"}
+            ret = {"code": 1,"msg":"该用户已存在"}
         except  Exception as e:
             ret = {"code": 1, "msg": "未知错误请联系管理员"}
         return JsonResponse(ret)
