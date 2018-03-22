@@ -18,6 +18,7 @@ from django.contrib import admin
 from .   import  views
 urlpatterns = [
     url(r'^$', views.DashboardView.as_view(), name='dashboard'),
+    url(r'^DarshboardData/$', views.DarshboardData.as_view(), name='DarshboardData'),
     url(r'^success/(?P<next>[\s\S]*)/$', views.SuccessView.as_view(), name='success'),
     url(r'^error/(?P<next>[\s\S]*)/(?P<msg>[\s\S\\u4e00-\\u9fa5]*)/$', views.ErrorView.as_view(), name="error"),
 

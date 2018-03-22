@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'devops.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':'devops1',
+        'NAME':'devops2',
         'USER': 'root',
         'PASSWORD': '123456',
         'HOST': '192.168.8.114',

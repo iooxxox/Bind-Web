@@ -9,7 +9,7 @@
 
           <div class="form-group"    >
             <div class="input-group">
-              <input    type="text" name="search_data" value="{{ search_data }}" class="form-control" >
+              <input    type="text" name="search_data"  class="form-control" >
             </div>
           </div>
 
@@ -32,7 +32,7 @@
           {% for named_obj in object_list%}
         <tr class="gradeX">
 
-                <td class="text-center"><a   class="label label-primary"  href="{% url 'named_detail'  named_obj.id %}"   list_id='{{named_obj.id}}' >{{named_obj.zone}}</a></td>
+                <td class="text-center"><a list_id='{{named_obj.id}}' >{{named_obj.zone}}</a></td>
                 <td class="text-center">{{named_obj.host}}</td>
                 <td class="text-center">{{named_obj.type}}</td>
                 <td class="text-center">{{named_obj.data}}</td>

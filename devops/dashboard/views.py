@@ -3,9 +3,11 @@ from django.shortcuts import render,reverse
 
 # Create your views here.
 from django.contrib.auth.decorators import login_required
-from  django.views.generic import TemplateView
+from  django.views.generic import TemplateView,View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
+from  named.models import  dns_record
+from  django.http import  HttpResponse, JsonResponse, QueryDict
 
 
 
@@ -43,3 +45,13 @@ class ErrorView(LoginRequiredMixin,TemplateView):
         context["next_url"] = next_url
         context["errmsg"] = errmsg
         return context
+
+
+class  DarshboardData(LoginRequiredMixin, View):
+    dns_model = dns_record
+
+    def get(self, request, *args, **kwargs):
+        ret ={}
+        ret['zone_counts'] = dns_record.objects.count()
+        ret['zone_count'] = dns_record.objects.values('zone').distinct().count()
+        return  JsonResponse(ret)
