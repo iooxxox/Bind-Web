@@ -18,12 +18,10 @@
 
 
 
+{% endblock  %}
 
 
-
-<script>
-
-
+{%  block js %}
     //域名解析
 $.getJSON('/dashboard/DarshboardData/',function(result){
 console.log(result)
@@ -100,7 +98,6 @@ console.log(result)
 
 
 })    
-</script>
 {% endblock  %}
 
 
