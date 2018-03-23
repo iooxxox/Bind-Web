@@ -11,12 +11,11 @@ from django.core.paginator import  Paginator, PageNotAnInteger ,EmptyPage
 from django.db.models import Q
 from django.contrib.auth.hashers import make_password, check_password
 from  ..pagerange import get_pagerange
-from   accounts.mixins import PermissionRequiredMixin
 
 import  json
 
 
-class UserListView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView,get_pagerange):
+class UserListView(LoginRequiredMixin, TemplateView,get_pagerange):
     template_name = 'user/userlist.html'
     permission_required='auth.add_user'
 
@@ -60,7 +59,7 @@ class UserListView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView,get
         return  context
 
 
-class ModifyUserView(LoginRequiredMixin,PermissionRequiredMixin, View):
+class ModifyUserView(LoginRequiredMixin, View):
     permission_required='auth.add_user'
 
     def post(self, request):
@@ -85,7 +84,7 @@ class ModifyUserView(LoginRequiredMixin,PermissionRequiredMixin, View):
         return JsonResponse(ret)
 
 
-class ModifyUserStatusView(LoginRequiredMixin, PermissionRequiredMixin, View):
+class ModifyUserStatusView(LoginRequiredMixin, View):
     permission_required='auth.add_user'
     def post(self, request):
         ret = {"code": 0}
