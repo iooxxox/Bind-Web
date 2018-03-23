@@ -9,6 +9,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import  permission_required, login_required
 from django.core.paginator import  Paginator, PageNotAnInteger ,EmptyPage
 from django.db.models import Q
+from django.contrib.auth.hashers import make_password, check_password
 from  ..pagerange import get_pagerange
 from   accounts.mixins import PermissionRequiredMixin
 
@@ -65,17 +66,15 @@ class ModifyUserView(LoginRequiredMixin,PermissionRequiredMixin, View):
     def post(self, request):
         data = (request.POST.dict())
         ret = {"code":0}
+        data['password']  = make_password(data['password'])
         try:
-            User_obj = User.objects.create_user(username=data['username'],
-                                              last_name=data['last_name'],
-                                              password=data['password'],
-                                              email=data['email'],
-                                               )
+            User_obj = User.objects.create(**data)
         except IntegrityError as e:
             ret = {"code": 1,"msg":"该用户已存在"}
         except  Exception as e:
             ret = {"code": 1, "msg": "未知错误请联系管理员"}
         return JsonResponse(ret)
+
 
     def delete(self, request, *args, **kwargs):
         ret = {"code": 0}
@@ -89,14 +88,14 @@ class ModifyUserView(LoginRequiredMixin,PermissionRequiredMixin, View):
 class ModifyUserStatusView(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required='auth.add_user'
     def post(self, request):
-        ret = {"status": 0}
+        ret = {"code": 0}
         uid = request.POST.get("uid", "")
         try:
             user_obj = User.objects.get(id=uid)
             user_obj.is_active = False if user_obj.is_active else True
             user_obj.save()
         except User.DoesNotExist:
-            ret["status"] = 1
+            ret["code"] = 1
             ret["errmsg"] = "用户不存在"
 
         return JsonResponse(ret)

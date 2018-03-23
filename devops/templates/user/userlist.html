@@ -261,7 +261,7 @@ $(".Addusers").on('click',function(){
                   type: "post",
                   data: {"uid": uid},
                   success: function(res){
-                     if (res.status == 0) {
+                     if (res.code == 0) {
                          swal("Good", "操作成功", "success");
                         //swal("操作成功", "success");
                         // console.log("操作成功")
