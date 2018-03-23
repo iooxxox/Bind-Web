@@ -17,7 +17,6 @@ import  json
 
 class UserListView(LoginRequiredMixin, TemplateView,get_pagerange):
     template_name = 'user/userlist.html'
-    permission_required='auth.add_user'
 
     per = 10
     befor_range_num = 5
@@ -60,7 +59,6 @@ class UserListView(LoginRequiredMixin, TemplateView,get_pagerange):
 
 
 class ModifyUserView(LoginRequiredMixin, View):
-    permission_required='auth.add_user'
 
     def post(self, request):
         data = (request.POST.dict())
@@ -85,7 +83,6 @@ class ModifyUserView(LoginRequiredMixin, View):
 
 
 class ModifyUserStatusView(LoginRequiredMixin, View):
-    permission_required='auth.add_user'
     def post(self, request):
         ret = {"code": 0}
         uid = request.POST.get("uid", "")
